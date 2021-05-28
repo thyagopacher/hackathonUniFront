@@ -1,6 +1,16 @@
-import api from 'api';
+import api from './api';
 
-
-async function getStudent(id) {
-    return await api.get("/student/" + id);
+const StudentService = {
+    getStudent: async function (id = '') {
+        return await api.get("/studends/" + id);
+    },
+    addStudent: async function (student) {
+        return await api.post('/students', student);
+    },
+    deleteStudent: async function (id) {
+        api.delete('students/' + id);
+    }
 }
+
+
+export default StudentService;
