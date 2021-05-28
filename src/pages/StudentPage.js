@@ -1,5 +1,5 @@
 import Page from 'components/Page';
-import api from '../services/api'
+import studentService from '../services/student'
 import { FaGithub, FaPhoneSquare, FaImage } from 'react-icons/fa';
 import React, { useState, useEffect } from 'react';
 import {
@@ -18,26 +18,26 @@ import {
 
 const StudentPage = () => {
 
-  const [students, setStudents] = useState([]);
+  const [student, setStudent] = useState([]);
 
   useEffect(() => {
-    api.get('students').then(response => {
-      setStudents(response.data);
+    studentService.getStudent().then(response => {
+      setStudent(response.data);
     });
   }, []);
 
   async function handleAddStudent(student) {
 
-    const response = await api.post('students', student);
+    const response = studentService.addStudent(student);
     const studentRes = response.data;
 
-    setStudents([...students, studentRes]);
+    setStudent([...student, studentRes]);
   }
 
   async function handleRemoveStudent(id) {
-    const response = await api.delete('students/' + id);
 
-    setStudents(students.filter(student => student.id !== id));
+    const response = studentService.deleteStudent(id);;
+    setStudent(student.filter(student => student.id !== id));
   }
 
   return (
@@ -54,6 +54,7 @@ const StudentPage = () => {
                     type="text"
                     name="nome"
                     placeholder="Digite nome"
+                    value={student.name}
                   />
                 </FormGroup>
                 <FormGroup>
@@ -62,14 +63,16 @@ const StudentPage = () => {
                     type="email"
                     name="email"
                     placeholder="Digite e-mail"
+                    value={student.email}
                   />
                 </FormGroup>
                 <FormGroup>
                   <Label>Senha</Label>
                   <Input
                     type="password"
-                    name="password"
+                    name="Senha"
                     placeholder="Digite senha"
+                    value={student.senha}
                   />
                 </FormGroup>
                 <FormGroup>
@@ -78,9 +81,10 @@ const StudentPage = () => {
                   </Label>
                   <Input
                     type="url"
-                    name="url"
-                    id="exampleUrl"
+                    name="perfil_github"
+                    id="perfil_github"
                     placeholder="url Perfil GitHub"
+                    value={student.perfil_github}
                   />
                 </FormGroup>
                 <FormGroup>
@@ -92,6 +96,7 @@ const StudentPage = () => {
                     name="celular"
                     id="celular"
                     placeholder="Digite num. celular"
+                    value={student.celular}
                   />
                 </FormGroup>
 
@@ -107,7 +112,7 @@ const StudentPage = () => {
                 </FormGroup>
                 <FormGroup>
                   <Label for="exampleText">Biográfia</Label>
-                  <Input type="textarea" name="text" placeholder="Digite sua biográfia" spellCheck />
+                  <Input type="textarea" name="text" placeholder="Digite sua biográfia" spellCheck value={student.biografia} />
                 </FormGroup>
                 <FormGroup>
                   <Label for="exampleFile">
@@ -121,7 +126,7 @@ const StudentPage = () => {
 
                 <FormGroup check>
                   <Label check>
-                    <Input type="checkbox" /> Desejo receber notificações por e-mail
+                    <Input type="checkbox" id="notificacao_email" name="notificacao_email" /> Desejo receber notificações por e-mail
                   </Label>
                 </FormGroup>
 
