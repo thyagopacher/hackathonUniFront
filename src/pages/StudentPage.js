@@ -1,6 +1,6 @@
 import Page from 'components/Page';
-import api from '../services/api'
-
+import studentService from '../services/student'
+import { FaGithub, FaPhoneSquare, FaImage } from 'react-icons/fa';
 import React, { useState, useEffect } from 'react';
 import {
   Button,
@@ -9,7 +9,6 @@ import {
   CardHeader,
   Col,
   Form,
-  FormFeedback,
   FormGroup,
   FormText,
   Input,
@@ -17,81 +16,90 @@ import {
   Row,
 } from 'reactstrap';
 
-const FormPage = () => {
+const StudentPage = () => {
 
-  const [students, setStudents] = useState([]);
+  const [student, setStudent] = useState([]);
 
   useEffect(() => {
-    api.get('alunos').then(response => {
-      setStudents(response.data);
+    studentService.getStudent().then(response => {
+      setStudent(response.data);
     });
-}, []);
+  }, []);
 
-  async function handleAddStudent(student){
+  async function handleAddStudent(student) {
 
-    const response = await api.post('students', student);
+    const response = studentService.addStudent(student);
     const studentRes = response.data;
 
-    setStudents([...students, studentRes]);
-}  
+    setStudent([...student, studentRes]);
+  }
 
   async function handleRemoveStudent(id) {
-    const response = await api.delete('students/' + id);
 
-    setStudents(students.filter(student => student.id !== id));
+    const response = studentService.deleteStudent(id);;
+    setStudent(student.filter(student => student.id !== id));
   }
 
   return (
-    <Page title="Alunos" breadcrumbs={[{ name: 'Aluno', active: true }]}>
+    <Page title="Meu Perfil" breadcrumbs={[{ name: 'Meu Perfil', active: true }]}>
       <Row>
         <Col xl={12} lg={12} md={12}>
           <Card>
             <CardHeader>Formulário de Cadastro</CardHeader>
             <CardBody>
               <Form>
-              <FormGroup>
+                <FormGroup>
                   <Label>Nome</Label>
                   <Input
                     type="text"
                     name="nome"
                     placeholder="Digite nome"
+                    value={student.name}
                   />
-                </FormGroup>                
+                </FormGroup>
                 <FormGroup>
                   <Label>Email</Label>
                   <Input
                     type="email"
                     name="email"
                     placeholder="Digite e-mail"
+                    value={student.email}
                   />
                 </FormGroup>
                 <FormGroup>
                   <Label>Senha</Label>
                   <Input
                     type="password"
-                    name="password"
+                    name="Senha"
                     placeholder="Digite senha"
+                    value={student.senha}
                   />
                 </FormGroup>
                 <FormGroup>
-                  <Label>Perfil GitHub</Label>
+                  <Label>
+                    Perfil GitHub <FaGithub />
+                  </Label>
                   <Input
                     type="url"
-                    name="url"
-                    id="exampleUrl"
+                    name="perfil_github"
+                    id="perfil_github"
                     placeholder="url Perfil GitHub"
+                    value={student.perfil_github}
                   />
                 </FormGroup>
                 <FormGroup>
-                  <Label for="exampleNumber">Celular</Label>
+                  <Label for="exampleNumber">
+                    Celular <FaPhoneSquare />
+                  </Label>
                   <Input
                     type="text"
                     name="celular"
                     id="celular"
                     placeholder="Digite num. celular"
+                    value={student.celular}
                   />
                 </FormGroup>
-                
+
                 <FormGroup>
                   <Label for="exampleSelectMulti">Interesses</Label>
                   <Input type="select" name="interesses" id="interesses" multiple>
@@ -104,27 +112,29 @@ const FormPage = () => {
                 </FormGroup>
                 <FormGroup>
                   <Label for="exampleText">Biográfia</Label>
-                  <Input type="textarea" name="text" placeholder="Digite sua biográfia" spellCheck/>
+                  <Input type="textarea" name="text" placeholder="Digite sua biográfia" spellCheck value={student.biografia} />
                 </FormGroup>
                 <FormGroup>
-                  <Label for="exampleFile">Foto</Label>
+                  <Label for="exampleFile">
+                    Foto <FaImage />
+                  </Label>
                   <Input type="file" name="file" />
                   <FormText color="muted">
                     Imagem que irá aparecer para identificar seu perfil.
                   </FormText>
                 </FormGroup>
-            
+
                 <FormGroup check>
                   <Label check>
-                    <Input type="checkbox" /> Desejo receber notificações por e-mail
+                    <Input type="checkbox" id="notificacao_email" name="notificacao_email" /> Desejo receber notificações por e-mail
                   </Label>
                 </FormGroup>
 
                 <FormGroup check row>
-                  <Col sm={{ size: 10, offset: 2 }}>
+                  <Col className="text-center">
                     <Button type='button' onClick={() => handleAddStudent(this)}>Salvar</Button>
                   </Col>
-                </FormGroup>                
+                </FormGroup>
               </Form>
             </CardBody>
           </Card>
@@ -134,5 +144,4 @@ const FormPage = () => {
   );
 };
 
-export default FormPage;
- 
+export default StudentPage;
