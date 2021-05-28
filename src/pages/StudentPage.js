@@ -1,6 +1,6 @@
 import Page from 'components/Page';
 import api from '../services/api'
-
+import { FaGithub, FaPhoneSquare, FaImage } from 'react-icons/fa';
 import React, { useState, useEffect } from 'react';
 import {
   Button,
@@ -9,7 +9,6 @@ import {
   CardHeader,
   Col,
   Form,
-  FormFeedback,
   FormGroup,
   FormText,
   Input,
@@ -17,23 +16,23 @@ import {
   Row,
 } from 'reactstrap';
 
-const FormPage = () => {
+const StudentPage = () => {
 
   const [students, setStudents] = useState([]);
 
   useEffect(() => {
-    api.get('alunos').then(response => {
+    api.get('students').then(response => {
       setStudents(response.data);
     });
-}, []);
+  }, []);
 
-  async function handleAddStudent(student){
+  async function handleAddStudent(student) {
 
     const response = await api.post('students', student);
     const studentRes = response.data;
 
     setStudents([...students, studentRes]);
-}  
+  }
 
   async function handleRemoveStudent(id) {
     const response = await api.delete('students/' + id);
@@ -42,21 +41,21 @@ const FormPage = () => {
   }
 
   return (
-    <Page title="Alunos" breadcrumbs={[{ name: 'Aluno', active: true }]}>
+    <Page title="Meu Perfil" breadcrumbs={[{ name: 'Meu Perfil', active: true }]}>
       <Row>
         <Col xl={12} lg={12} md={12}>
           <Card>
             <CardHeader>Formulário de Cadastro</CardHeader>
             <CardBody>
               <Form>
-              <FormGroup>
+                <FormGroup>
                   <Label>Nome</Label>
                   <Input
                     type="text"
                     name="nome"
                     placeholder="Digite nome"
                   />
-                </FormGroup>                
+                </FormGroup>
                 <FormGroup>
                   <Label>Email</Label>
                   <Input
@@ -74,7 +73,9 @@ const FormPage = () => {
                   />
                 </FormGroup>
                 <FormGroup>
-                  <Label>Perfil GitHub</Label>
+                  <Label>
+                    Perfil GitHub <FaGithub />
+                  </Label>
                   <Input
                     type="url"
                     name="url"
@@ -83,7 +84,9 @@ const FormPage = () => {
                   />
                 </FormGroup>
                 <FormGroup>
-                  <Label for="exampleNumber">Celular</Label>
+                  <Label for="exampleNumber">
+                    Celular <FaPhoneSquare />
+                  </Label>
                   <Input
                     type="text"
                     name="celular"
@@ -91,7 +94,7 @@ const FormPage = () => {
                     placeholder="Digite num. celular"
                   />
                 </FormGroup>
-                
+
                 <FormGroup>
                   <Label for="exampleSelectMulti">Interesses</Label>
                   <Input type="select" name="interesses" id="interesses" multiple>
@@ -104,16 +107,18 @@ const FormPage = () => {
                 </FormGroup>
                 <FormGroup>
                   <Label for="exampleText">Biográfia</Label>
-                  <Input type="textarea" name="text" placeholder="Digite sua biográfia" spellCheck/>
+                  <Input type="textarea" name="text" placeholder="Digite sua biográfia" spellCheck />
                 </FormGroup>
                 <FormGroup>
-                  <Label for="exampleFile">Foto</Label>
+                  <Label for="exampleFile">
+                    Foto <FaImage />
+                  </Label>
                   <Input type="file" name="file" />
                   <FormText color="muted">
                     Imagem que irá aparecer para identificar seu perfil.
                   </FormText>
                 </FormGroup>
-            
+
                 <FormGroup check>
                   <Label check>
                     <Input type="checkbox" /> Desejo receber notificações por e-mail
@@ -121,10 +126,10 @@ const FormPage = () => {
                 </FormGroup>
 
                 <FormGroup check row>
-                  <Col sm={{ size: 10, offset: 2 }}>
+                  <Col className="text-center">
                     <Button type='button' onClick={() => handleAddStudent(this)}>Salvar</Button>
                   </Col>
-                </FormGroup>                
+                </FormGroup>
               </Form>
             </CardBody>
           </Card>
@@ -134,5 +139,4 @@ const FormPage = () => {
   );
 };
 
-export default FormPage;
- 
+export default StudentPage;
