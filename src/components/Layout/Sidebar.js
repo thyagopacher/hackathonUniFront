@@ -28,13 +28,9 @@ const sidebarBackground = {
 const navItems = [
   { to: '/', name: 'dashboard', exact: true, Icon: MdDashboard },
   { to: '/cards', name: 'meus projetos', exact: false, Icon: MdWeb },
-<<<<<<< HEAD
   { to: '/forms', name: 'aluno', exact: false, Icon: MdInsertChart },
   { to: '/project', name: 'projeto', exact: false, Icon: MdWidgets },
-=======
   { to: '/students', name: 'meu perfil', exact: false, Icon: MdInsertChart },
-  { to: '/input-groups', name: 'projeto', exact: false, Icon: MdWidgets },
->>>>>>> f19663a7a380534c1d0f5098eaae88294fc340d9
 ];
 
 const bem = bn.create('sidebar');
