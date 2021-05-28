@@ -19,6 +19,7 @@ const DashboardPage = React.lazy(() => import('pages/DashboardPage'));
 const DropdownPage = React.lazy(() => import('pages/DropdownPage'));
 const FormPage = React.lazy(() => import('pages/FormPage'));
 const InputGroupPage = React.lazy(() => import('pages/InputGroupPage'));
+const ProjectPage = React.lazy(() => import('pages/project/ProjectPage'));
 const ModalPage = React.lazy(() => import('pages/ModalPage'));
 const ProgressPage = React.lazy(() => import('pages/ProgressPage'));
 const TablePage = React.lazy(() => import('pages/TablePage'));
@@ -73,6 +74,7 @@ class App extends React.Component {
                 <Route exact path="/modals" component={ModalPage} />
                 <Route exact path="/forms" component={FormPage} />
                 <Route exact path="/input-groups" component={InputGroupPage} />
+                <Route exact path="/project" component={ProjectPage} />                
                 <Route exact path="/charts" component={ChartPage} />
               </React.Suspense>
             </MainLayout>
