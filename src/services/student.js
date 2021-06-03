@@ -1,6 +1,6 @@
 import api from './api';
 
-const StudentService = {
+const studentService = {
     getStudent: async function (id = '') {
         return await api.get("/studends/" + id);
     },
@@ -13,4 +13,4 @@ const StudentService = {
 }
 
 
-export default StudentService;
+export default studentService;

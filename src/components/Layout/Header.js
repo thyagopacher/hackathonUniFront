@@ -46,11 +46,28 @@ const MdNotificationsActiveWithBadge = withBadge({
 })(MdNotificationsActive);
 
 class Header extends React.Component {
+
+  lastUserAction = '';
+
   state = {
     isOpenNotificationPopover: false,
     isNotificationConfirmed: false,
     isOpenUserCardPopover: false,
   };
+
+  constructor(props) {
+    super(props);
+    // Não chame this.setState() aqui!
+    if (window.performance) {
+      if (performance.navigation.type === 1) {
+        let now = new Date();
+        window.localStorage.setItem('last_user_action', now.getTime());
+        this.lastUserAction = 'Última ação: ' + now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) + " Hs"
+      }
+    }
+  }
+
+
 
   toggleNotificationPopover = () => {
     this.setState({
@@ -135,9 +152,9 @@ class Header extends React.Component {
             >
               <PopoverBody className="p-0 border-light">
                 <UserCard
-                  title="Jane"
-                  subtitle="jane@jane.com"
-                  text="Last updated 3 mins ago"
+                  title="Alguem"
+                  subtitle="alguem@algum.com"
+                  text={this.lastUserAction}
                   className="border-light"
                 >
                   <ListGroup flush>
