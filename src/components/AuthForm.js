@@ -2,14 +2,25 @@ import logo200Image from 'assets/img/logo/logo_200.png';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Button, Form, FormGroup, Input, Label } from 'reactstrap';
+import studentService from '../services/student';
 
 class AuthForm extends React.Component {
+
+  login = {
+    email: '',
+    senha: ''
+  };
+
   get isLogin() {
     return this.props.authState === STATE_LOGIN;
   }
 
   get isSignup() {
     return this.props.authState === STATE_SIGNUP;
+  }
+
+  setaValor = (name, value) => {
+    this.login[name] = value;
   }
 
   changeAuthState = authState => event => {
@@ -19,6 +30,11 @@ class AuthForm extends React.Component {
   };
 
   handleSubmit = event => {
+    studentService.login(this.login).then(response => {
+      console.log(response);
+    }).catch(error => {
+      console.log('Erro causado por:', error);
+    });;
     event.preventDefault();
   };
 
@@ -30,7 +46,7 @@ class AuthForm extends React.Component {
     }
 
     if (!buttonText && this.isSignup) {
-      return 'Signup';
+      return 'Inscrever';
     }
 
     return buttonText;
@@ -64,22 +80,28 @@ class AuthForm extends React.Component {
         )}
         <FormGroup>
           <Label for={usernameLabel}>{usernameLabel}</Label>
-          <Input {...usernameInputProps} />
+          <Input {...usernameInputProps}
+            onChange={event => this.setaValor(event.target.name, event.target.value)}
+          />
         </FormGroup>
         <FormGroup>
           <Label for={passwordLabel}>{passwordLabel}</Label>
-          <Input {...passwordInputProps} />
+          <Input {...passwordInputProps}
+            onChange={event => this.setaValor(event.target.name, event.target.value)}
+          />
         </FormGroup>
         {this.isSignup && (
           <FormGroup>
             <Label for={confirmPasswordLabel}>{confirmPasswordLabel}</Label>
-            <Input {...confirmPasswordInputProps} />
+            <Input {...confirmPasswordInputProps}
+              onChange={event => this.setaValor(event.target.name, event.target.value)}
+            />
           </FormGroup>
         )}
         <FormGroup check>
           <Label check>
             <Input type="checkbox" />{' '}
-            {this.isSignup ? 'Agree the terms and policy' : 'Remember me'}
+            {this.isSignup ? 'Aceito termos e politicas' : 'Lembrar de mim'}
           </Label>
         </FormGroup>
         <hr />
@@ -92,7 +114,7 @@ class AuthForm extends React.Component {
         </Button>
 
         <div className="text-center pt-1">
-          <h6>or</h6>
+          <h6>ou</h6>
           <h6>
             {this.isSignup ? (
               <a href="#login" onClick={this.changeAuthState(STATE_LOGIN)}>
@@ -100,7 +122,7 @@ class AuthForm extends React.Component {
               </a>
             ) : (
               <a href="#signup" onClick={this.changeAuthState(STATE_SIGNUP)}>
-                Signup
+                Inscrever
               </a>
             )}
           </h6>
@@ -133,19 +155,22 @@ AuthForm.defaultProps = {
   usernameLabel: 'Email',
   usernameInputProps: {
     type: 'email',
-    placeholder: 'your@email.com',
+    placeholder: 'alguem@email.com',
+    name: 'email'
   },
-  passwordLabel: 'Password',
+  passwordLabel: 'Senha',
   passwordInputProps: {
     type: 'password',
-    placeholder: 'your password',
+    placeholder: 'Sua senha',
+    name: 'senha'
   },
-  confirmPasswordLabel: 'Confirm Password',
+  confirmPasswordLabel: 'Confirme Senha',
   confirmPasswordInputProps: {
     type: 'password',
-    placeholder: 'confirm your password',
+    placeholder: 'Confirme sua senha',
+    name: 'confirmar_senha'
   },
-  onLogoClick: () => {},
+  onLogoClick: () => { },
 };
 
 export default AuthForm;

@@ -9,6 +9,9 @@ const studentService = {
     },
     deleteStudent: async function (id) {
         api.delete('students/' + id);
+    },
+    login: async function (formLogin) {
+        api.post('login/', formLogin);
     }
 }
 
