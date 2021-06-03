@@ -4,7 +4,10 @@ import axios from 'axios';
  * altera para url do projeto conectado ao banco de dados
  */
 const api = axios.create({
-    baseURL: 'http://localhost:3333'
+    baseURL: "https://hackathon-api.andreazza.dev",
+    headers: {
+        "Content-type": "application/json"
+    }
 });
 
-export default api; 
+export default api;

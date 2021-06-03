@@ -1,7 +1,7 @@
 import Page from 'components/Page';
-import studentService from '../services/student'
+import studentService from '../services/student';
 import { FaGithub, FaPhoneSquare, FaImage } from 'react-icons/fa';
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import {
   Button,
   Card,
@@ -16,28 +16,26 @@ import {
   Row,
 } from 'reactstrap';
 
+
 const StudentPage = () => {
 
-  const [student, setStudent] = useState([]);
+  const student = {};
 
-  useEffect(() => {
-    studentService.getStudent().then(response => {
-      setStudent(response.data);
-    });
-  }, []);
+  async function handleSaveStudent() {
+    studentService.addStudent(student).then(response => {
+      console.log(response.data);
+    }).catch(error => {
+      console.log('Erro causado por:', error);
+    });;
+  }
 
-  async function handleAddStudent(student) {
-
-    const response = studentService.addStudent(student);
-    const studentRes = response.data;
-
-    setStudent([...student, studentRes]);
+  function setaValor(name, value) {
+    student[name] = value;
   }
 
   async function handleRemoveStudent(id) {
-
-    const response = studentService.deleteStudent(id);;
-    setStudent(student.filter(student => student.id !== id));
+    const response = studentService.deleteStudent(id);
+    console.log(response);
   }
 
   return (
@@ -54,7 +52,8 @@ const StudentPage = () => {
                     type="text"
                     name="nome"
                     placeholder="Digite nome"
-                    value={student.name}
+                    value={student.nome}
+                    onChange={event => setaValor(event.target.name, event.target.value)}
                   />
                 </FormGroup>
                 <FormGroup>
@@ -64,6 +63,7 @@ const StudentPage = () => {
                     name="email"
                     placeholder="Digite e-mail"
                     value={student.email}
+                    onChange={event => setaValor(event.target.name, event.target.value)}
                   />
                 </FormGroup>
                 <FormGroup>
@@ -73,6 +73,7 @@ const StudentPage = () => {
                     name="Senha"
                     placeholder="Digite senha"
                     value={student.senha}
+                    onChange={event => setaValor(event.target.name, event.target.value)}
                   />
                 </FormGroup>
                 <FormGroup>
@@ -85,6 +86,7 @@ const StudentPage = () => {
                     id="perfil_github"
                     placeholder="url Perfil GitHub"
                     value={student.perfil_github}
+                    onChange={event => setaValor(event.target.name, event.target.value)}
                   />
                 </FormGroup>
                 <FormGroup>
@@ -97,12 +99,19 @@ const StudentPage = () => {
                     id="celular"
                     placeholder="Digite num. celular"
                     value={student.celular}
+                    onChange={event => setaValor(event.target.name, event.target.value)}
                   />
                 </FormGroup>
 
                 <FormGroup>
                   <Label for="exampleSelectMulti">Interesses</Label>
-                  <Input type="select" name="interesses" id="interesses" multiple>
+                  <Input
+                    type="select"
+                    name="interesses"
+                    id="interesses"
+                    multiple
+                    onChange={event => setaValor(event.target.name, event.target.value)}
+                  >
                     <option>Interesse - 1</option>
                     <option>Interesse - 2</option>
                     <option>Interesse - 3</option>
@@ -112,7 +121,14 @@ const StudentPage = () => {
                 </FormGroup>
                 <FormGroup>
                   <Label for="exampleText">Biográfia</Label>
-                  <Input type="textarea" name="text" placeholder="Digite sua biográfia" spellCheck value={student.biografia} />
+                  <Input
+                    type="textarea"
+                    name="biografia"
+                    placeholder="Digite sua biográfia"
+                    spellCheck
+                    value={student.biografia}
+                    onChange={event => setaValor(event.target.name, event.target.value)}
+                  />
                 </FormGroup>
                 <FormGroup>
                   <Label for="exampleFile">
@@ -132,7 +148,7 @@ const StudentPage = () => {
 
                 <FormGroup check row>
                   <Col className="text-center">
-                    <Button type='button' onClick={() => handleAddStudent(this)}>Salvar</Button>
+                    <Button type='button' onClick={() => handleSaveStudent(this)}>Salvar</Button>
                   </Col>
                 </FormGroup>
               </Form>

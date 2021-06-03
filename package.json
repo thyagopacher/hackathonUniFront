@@ -13,6 +13,7 @@
     "node-sass-middleware": "^0.11.0",
     "prop-types": "^15.7.2",
     "react": "^16.8.4",
+    "react-beforeunload": "^2.5.1",
     "react-chartjs-2": "^2.7.4",
     "react-component-queries": "^2.3.0",
     "react-d3-map": "^0.8.3",

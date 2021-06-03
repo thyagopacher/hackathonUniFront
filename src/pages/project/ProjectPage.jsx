@@ -4,34 +4,38 @@ import {
   Row,
   Col,
   Card,
-  CardHeader,
   CardBody,
-  InputGroup,
-  InputGroupAddon,
-  InputGroupText,
-  Input,
   CardImg,
   CardText,
   CardTitle,
-  CardSubtitle,
   Button
 } from 'reactstrap';
 
-import project from "./projectsData";
-
+import projects from "./projectsData";
+import { FaPlus } from "react-icons/fa";
 import Page from 'components/Page';
 
+/** retorna a listagem dos cards para projetos */
 const cardProject = () => {
-  return project.map((project, i) => {
+  return projects.map((project, key) => {
     return (
-      <Col md={2}>
+      /** atributo key é essencial para demonstrar ao react que são itens distintos */
+      <Col key={key} md={3}>
         <Card>
-          <CardImg top width="100%" src="https://i1.wp.com/arteref.com/wp-content/uploads/2018/04/rick-morty.jpg" alt="Card image cap" />
+          <CardImg top width="100%" src={project.image} alt="Imagem projeto" />
           <CardBody>
-            <CardTitle tag="h5">Card title</CardTitle>
-            <CardSubtitle tag="h6" className="mb-2 text-muted">Card subtitle</CardSubtitle>
-            <CardText>Some quick example text to build on the card title and make up the bulk of the card's content.</CardText>
-            <Button>Button</Button>
+            <CardTitle tag="h5">{project.title}</CardTitle>
+            {/* <CardSubtitle tag="h6" className="mb-2 text-muted">Card subtitle</CardSubtitle> */}
+            <CardText>{project.description}</CardText>
+            <Col className="text-center">
+              <Button
+                title="Clique para ver mais detalhes"
+
+              >
+                <FaPlus />
+                Veja mais
+              </Button>
+            </Col>
           </CardBody>
         </Card>
       </Col>
@@ -42,11 +46,11 @@ const cardProject = () => {
 const ProjectPage = () => {
   return (
     <Page
-      title="Project"
-      breadcrumbs={[{ name: 'See others', active: true }]}
+      title="Projetos"
+      breadcrumbs={[{ name: 'Ver outros', active: true }]}
     >
       <Row>
-          {cardProject()}
+        {cardProject()}
       </Row>
 
     </Page>
