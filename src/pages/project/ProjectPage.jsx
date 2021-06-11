@@ -30,7 +30,6 @@ const cardProject = () => {
             <Col className="text-center">
               <Button
                 title="Clique para ver mais detalhes"
-
               >
                 <FaPlus />
                 Veja mais
