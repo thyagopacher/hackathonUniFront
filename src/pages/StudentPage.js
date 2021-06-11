@@ -22,7 +22,7 @@ const StudentPage = () => {
   const student = {};
 
   async function handleSaveStudent() {
-    studentService.addStudent(student).then(response => {
+    studentService.saveStudent(student).then(response => {
       console.log(response.data);
     }).catch(error => {
       console.log('Erro causado por:', error);
