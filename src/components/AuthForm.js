@@ -30,11 +30,41 @@ class AuthForm extends React.Component {
   };
 
   handleSubmit = event => {
-    studentService.login(this.login).then(response => {
-      console.log(response);
-    }).catch(error => {
-      console.log('Erro causado por:', error);
-    });;
+    /**
+     * esta realizando login no sistema
+     */
+    if (this.isLogin) {
+      studentService.login(this.login).then(response => {
+        if (response.status) {
+          //esta logado
+          localStorage.setItem('isLoggedIn', 'S');
+          localStorage.setItem('returnLogin', JSON.stringify(response));
+
+          //redireciona para home
+          window.location.href = '/';
+        }
+      }).catch(error => {
+        console.error('Erro causado por:' + error);
+      });
+    }
+
+    /**
+     * método para se registrar
+     */
+    if (this.isSignup) {
+      studentService.saveStudent(this.login).then(response => {
+        if (response.status) {
+          //esta inscrito
+          localStorage.setItem('isRegistered', 'S');
+
+          //redireciona para login
+          window.location.href = '/login';
+        }
+      }).catch(error => {
+        console.error('Erro causado por:' + error);
+      });
+    }
+
     event.preventDefault();
   };
 

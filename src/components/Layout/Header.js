@@ -159,22 +159,22 @@ class Header extends React.Component {
                 >
                   <ListGroup flush>
                     <ListGroupItem tag="button" action className="border-light">
-                      <MdPersonPin /> Profile
+                      <MdPersonPin /> Meu Perfil
                     </ListGroupItem>
                     <ListGroupItem tag="button" action className="border-light">
                       <MdInsertChart /> Stats
                     </ListGroupItem>
                     <ListGroupItem tag="button" action className="border-light">
-                      <MdMessage /> Messages
+                      <MdMessage /> Mensagens
                     </ListGroupItem>
                     <ListGroupItem tag="button" action className="border-light">
-                      <MdSettingsApplications /> Settings
+                      <MdSettingsApplications /> Configurações
                     </ListGroupItem>
                     <ListGroupItem tag="button" action className="border-light">
-                      <MdHelp /> Help
+                      <MdHelp /> Ajuda
                     </ListGroupItem>
                     <ListGroupItem tag="button" action className="border-light">
-                      <MdExitToApp /> Signout
+                      <MdExitToApp /> Sair
                     </ListGroupItem>
                   </ListGroup>
                 </UserCard>
