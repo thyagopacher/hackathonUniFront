@@ -69,72 +69,72 @@ export const avatarsData = [
   {
     avatar: user1Image,
     name: 'Tom',
-    date: '3 month ago',
+    date: '3 meses atrás',
   },
   {
     avatar: user2Image,
     name: 'Jenny',
-    date: '1 year ago',
+    date: '1 ano atrás',
   },
   {
     avatar: user3Image,
     name: 'Sim',
-    date: '2 hour ago',
+    date: '2 hora atrás',
   },
   {
     avatar: user4Image,
     name: 'Christine',
-    date: 'a month ago',
+    date: 'a meses atrás',
   },
   {
     avatar: user5Image,
     name: 'Bread',
-    date: '6 months ago',
+    date: '6 meses ago',
   },
   {
     avatar: user6Image,
     name: 'Dan',
-    date: '2 years ago',
+    date: '2 anos ago',
   },
   {
     avatar: user7Image,
     name: 'Merry',
-    date: '3 month ago',
+    date: '3 meses atrás',
   },
   {
     avatar: user8Image,
     name: 'John',
-    date: '1 month ago',
+    date: '1 meses atrás',
   },
   {
     avatar: user9Image,
     name: 'Shane',
-    date: '7 month ago',
+    date: '7 meses atrás',
   },
   {
     avatar: user10Image,
     name: 'Star',
-    date: '1 year ago',
+    date: '1 ano atrás',
   },
   {
     avatar: user11Image,
     name: 'Jenny',
-    date: '3 month ago',
+    date: '3 meses atrás',
   },
   {
     avatar: user12Image,
     name: 'Park',
-    date: '4 month ago',
+    date: '4 meses atrás',
   },
   {
     avatar: user13Image,
     name: 'Dave',
-    date: '9 month ago',
+    date: '9 meses atrás',
   },
   {
     avatar: user14Image,
     name: 'Jackson',
-    date: '10 month ago',
+    date: '10 meses atrás',
   },
 ];
 
@@ -142,13 +142,13 @@ export const userProgressTableData = [
   {
     avatar: user1Image,
     name: 'Tom',
-    date: '3 month ago',
+    date: '3 meses atrás',
     progress: 75,
   },
   {
     avatar: user2Image,
     name: 'Jenny',
-    date: '1 year ago',
+    date: '1 ano atrás',
     progress: 60,
   },
   {
@@ -160,7 +160,7 @@ export const userProgressTableData = [
   {
     avatar: user4Image,
     name: 'Christine',
-    date: 'a month ago',
+    date: 'a meses atrás',
     progress: 40,
   },
   {
