@@ -28,7 +28,6 @@ const StudentPage = () => {
 
   async function handleSaveStudent() {
     studentService.saveStudent(student).then(response => {
-      console.log(response.status);
       if (response.status) {
         MySwal.fire({
           position: 'top-end',

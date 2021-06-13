@@ -1,7 +1,9 @@
 import { AnnouncementCard, TodosCard } from 'components/Card';
+import projectService from '../services/project';
 import HorizontalAvatarList from 'components/HorizontalAvatarList';
 import MapWithBubbles from 'components/MapWithBubbles';
 import Page from 'components/Page';
+
 import ProductMedia from 'components/ProductMedia';
 import SupportTicket from 'components/SupportTicket';
 import UserProgressTable from 'components/UserProgressTable';
@@ -15,7 +17,7 @@ import {
   todosData,
   userProgressTableData,
 } from 'demos/dashboardPage';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Bar, Line } from 'react-chartjs-2';
 import {
   MdBubbleChart,
@@ -45,19 +47,46 @@ import {
 import { getColor } from 'utils/colors';
 
 const today = new Date();
-const lastWeek = new Date(
+const thisWeek = new Date(
   today.getFullYear(),
   today.getMonth(),
   today.getDate() - 7,
 );
 
 class DashboardPage extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      projects: [],
+      isLoading: true
+    };
+    this.loadProjects();
+  }
+
   componentDidMount() {
     // this is needed, because InfiniteCalendar forces window scroll
+
     window.scrollTo(0, 0);
   }
 
+  loadProjects() {
+    projectService.getProject().then(response => {
+      const projetos = response.data[0].lista;
+      this.setState({
+        projects: projetos,
+        isLoading: false,
+      });
+    }).catch(error => {
+      console.error(error);
+    });
+  }
+
+
+
   render() {
+
+    const { isLoading, projects } = this.state;
     const primaryColor = getColor('primary');
     const secondaryColor = getColor('secondary');
 
@@ -70,63 +99,63 @@ class DashboardPage extends React.Component {
         <Row>
           <Col lg={3} md={6} sm={6} xs={12}>
             <NumberWidget
-              title="Total Profit"
-              subtitle="This month"
+              title="Total Engajamento"
+              subtitle="Este mês"
               number="9.8k"
               color="secondary"
               progress={{
                 value: 75,
-                label: 'Last month',
+                label: 'Último mês',
               }}
             />
           </Col>
 
           <Col lg={3} md={6} sm={6} xs={12}>
             <NumberWidget
-              title="Monthly Visitors"
-              subtitle="This month"
-              number="5,400"
+              title="Visitantes Mês"
+              subtitle="Este mês"
+              number="5.400"
               color="secondary"
               progress={{
                 value: 45,
-                label: 'Last month',
+                label: 'Último mês',
               }}
             />
           </Col>
 
           <Col lg={3} md={6} sm={6} xs={12}>
             <NumberWidget
-              title="New Users"
-              subtitle="This month"
+              title="Usuários em seus projetos"
+              subtitle="Este mês"
               number="3,400"
               color="secondary"
               progress={{
                 value: 90,
-                label: 'Last month',
+                label: 'Último mês',
               }}
             />
           </Col>
 
-          <Col lg={3} md={6} sm={6} xs={12}>
+          {/* <Col lg={3} md={6} sm={6} xs={12}>
             <NumberWidget
               title="Bounce Rate"
-              subtitle="This month"
+              subtitle="Este mês"
               number="38%"
               color="secondary"
               progress={{
                 value: 60,
-                label: 'Last month',
+                label: 'Último mês',
               }}
             />
-          </Col>
+          </Col> */}
         </Row>
 
         <Row>
           <Col lg="8" md="12" sm="12" xs="12">
             <Card>
               <CardHeader>
-                Total Revenue{' '}
-                <small className="text-muted text-capitalize">This year</small>
+                Projetos Sugeridos{' '}
+                <small className="text-muted text-capitalize">Este ano</small>
               </CardHeader>
               <CardBody>
                 <Line data={chartjs.line.data} options={chartjs.line.options} />
@@ -136,26 +165,25 @@ class DashboardPage extends React.Component {
 
           <Col lg="4" md="12" sm="12" xs="12">
             <Card>
-              <CardHeader>Total Expense</CardHeader>
+              <CardHeader>Total Gasto (Seus Projetos)</CardHeader>
               <CardBody>
                 <Bar data={chartjs.bar.data} options={chartjs.bar.options} />
               </CardBody>
               <ListGroup flush>
                 <ListGroupItem>
-                  <MdInsertChart size={25} color={primaryColor} /> Cost of sales{' '}
-                  <Badge color="secondary">$3000</Badge>
+                  <MdInsertChart size={25} color={primaryColor} /> Preço para venda{' '}
+                  <Badge color="secondary">R$ 3000,00</Badge>
                 </ListGroupItem>
                 <ListGroupItem>
-                  <MdBubbleChart size={25} color={primaryColor} /> Management
-                  costs <Badge color="secondary">$1200</Badge>
+                  <MdBubbleChart size={25} color={primaryColor} /> Gestão de custos <Badge color="secondary">R$ 1200,00</Badge>
                 </ListGroupItem>
                 <ListGroupItem>
-                  <MdShowChart size={25} color={primaryColor} /> Financial costs{' '}
-                  <Badge color="secondary">$800</Badge>
+                  <MdShowChart size={25} color={primaryColor} /> Financiamento de custo {' '}
+                  <Badge color="secondary">R$ 800,00</Badge>
                 </ListGroupItem>
                 <ListGroupItem>
-                  <MdPieChart size={25} color={primaryColor} /> Other operating
-                  costs <Badge color="secondary">$2400</Badge>
+                  <MdPieChart size={25} color={primaryColor} /> Outras demandas
+                  costs <Badge color="secondary">R$ 2400,00</Badge>
                 </ListGroupItem>
               </ListGroup>
             </Card>
@@ -168,54 +196,55 @@ class DashboardPage extends React.Component {
             inverse={false}
             icon={MdThumbUp}
             title="50+ Likes"
-            subtitle="People you like"
+            subtitle="Pessoas que você curtiu"
           />
           <IconWidget
             bgColor="white"
             inverse={false}
             icon={MdRateReview}
-            title="10+ Reviews"
-            subtitle="New Reviews"
+            title="10+ Comentários"
+            subtitle="Comentários Novos"
           />
           <IconWidget
             bgColor="white"
             inverse={false}
             icon={MdShare}
-            title="30+ Shares"
-            subtitle="New Shares"
+            title="30+ Compartilhamentos"
+            subtitle="Compartilhamentos Novos"
           />
         </CardGroup>
 
         <Row>
           <Col md="6" sm="12" xs="12">
             <Card>
-              <CardHeader>New Products</CardHeader>
+              <CardHeader>Novos Projetos</CardHeader>
               <CardBody>
-                {productsData.map(
-                  ({ id, image, title, description, right }) => (
-                    <ProductMedia
-                      key={id}
-                      image={image}
-                      title={title}
-                      description={description}
-                      right={right}
-                    />
-                  ),
-                )}
+                {
+                  !isLoading ? projects.map(
+                    ({ image, title, description }, indice) => (
+                      <ProductMedia
+                        key={indice}
+                        image={image}
+                        title={title}
+                        description={description}
+                      />
+                    ),
+                  ) : <h3>Carregando...</h3>
+                }
               </CardBody>
             </Card>
           </Col>
 
           <Col md="6" sm="12" xs="12">
             <Card>
-              <CardHeader>New Users</CardHeader>
+              <CardHeader>Usuários em seus projetos</CardHeader>
               <CardBody>
                 <UserProgressTable
                   headers={[
                     <MdPersonPin size={25} />,
-                    'name',
-                    'date',
-                    'participation',
+                    'Nome',
+                    'Ult. Contato',
+                    'Participação',
                     '%',
                   ]}
                   usersData={userProgressTableData}
@@ -248,7 +277,7 @@ class DashboardPage extends React.Component {
                 style={{ position: 'absolute' }}
               >
                 <CardTitle>
-                  <MdInsertChart /> Sales
+                  <MdInsertChart /> Sua participação
                 </CardTitle>
               </CardBody>
             </Card>
@@ -276,7 +305,7 @@ class DashboardPage extends React.Component {
                 style={{ position: 'absolute' }}
               >
                 <CardTitle>
-                  <MdInsertChart /> Revenue
+                  <MdInsertChart /> Projetos sugeridos
                 </CardTitle>
               </CardBody>
             </Card>
@@ -303,7 +332,7 @@ class DashboardPage extends React.Component {
                 style={{ position: 'absolute', right: 0 }}
               >
                 <CardTitle>
-                  <MdInsertChart /> Profit
+                  <MdInsertChart /> Participação em seus projetos
                 </CardTitle>
               </CardBody>
             </Card>
@@ -311,10 +340,10 @@ class DashboardPage extends React.Component {
         </Row>
 
         <Row>
-          <Col lg="4" md="12" sm="12" xs="12">
+          {/* <Col lg="4" md="12" sm="12" xs="12">
             <InfiniteCalendar
               selected={today}
-              minDate={lastWeek}
+              minDate={ÚltimoWeek}
               width="100%"
               theme={{
                 accentColor: primaryColor,
@@ -333,12 +362,12 @@ class DashboardPage extends React.Component {
                 weekdayColor: primaryColor,
               }}
             />
-          </Col>
+          </Col> */}
 
-          <Col lg="8" md="12" sm="12" xs="12">
+          <Col lg="12" md="12" sm="12" xs="12">
             <Card inverse className="bg-gradient-primary">
               <CardHeader className="bg-gradient-primary">
-                Map with bubbles
+                Mapa de participação
               </CardHeader>
               <CardBody>
                 <MapWithBubbles />
@@ -348,14 +377,14 @@ class DashboardPage extends React.Component {
         </Row>
 
         <CardDeck style={{ marginBottom: '1rem' }}>
-          <Card body style={{ overflowX: 'auto','paddingBottom':'15px','height': 'fit-content','paddingTop': 'inherit'}}>
+          <Card body style={{ overflowX: 'auto', 'paddingBottom': '15px', 'height': 'fit-content', 'paddingTop': 'inherit' }}>
             <HorizontalAvatarList
               avatars={avatarsData}
               avatarProps={{ size: 50 }}
             />
           </Card>
 
-          <Card body style={{ overflowX: 'auto','paddingBottom':'15px','height': 'fit-content','paddingTop': 'inherit'}}>
+          <Card body style={{ overflowX: 'auto', 'paddingBottom': '15px', 'height': 'fit-content', 'paddingTop': 'inherit' }}>
             <HorizontalAvatarList
               avatars={avatarsData}
               avatarProps={{ size: 50 }}
@@ -365,42 +394,11 @@ class DashboardPage extends React.Component {
         </CardDeck>
 
         <Row>
-          <Col lg="4" md="12" sm="12" xs="12">
-            <AnnouncementCard
-              color="gradient-secondary"
-              header="Announcement"
-              avatarSize={60}
-              name="Jamy"
-              date="1 hour ago"
-              text="Lorem ipsum dolor sit amet,consectetuer edipiscing elit,sed diam nonummy euismod tinciduntut laoreet doloremagna"
-              buttonProps={{
-                children: 'show',
-              }}
-              style={{ height: 500 }}
-            />
-          </Col>
 
-          <Col lg="4" md="12" sm="12" xs="12">
-            <Card>
-              <CardHeader>
-                <div className="d-flex justify-content-between align-items-center">
-                  <span>Support Tickets</span>
-                  <Button>
-                    <small>View All</small>
-                  </Button>
-                </div>
-              </CardHeader>
-              <CardBody>
-                {supportTicketsData.map(supportTicket => (
-                  <SupportTicket key={supportTicket.id} {...supportTicket} />
-                ))}
-              </CardBody>
-            </Card>
-          </Col>
 
-          <Col lg="4" md="12" sm="12" xs="12">
+          {/* <Col lg="4" md="12" sm="12" xs="12">
             <TodosCard todos={todosData} />
-          </Col>
+          </Col> */}
         </Row>
       </Page>
     );
