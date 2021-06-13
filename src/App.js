@@ -6,7 +6,7 @@ import AuthPage from 'pages/AuthPage';
 import React from 'react';
 import PrivateRoute from 'components/PrivateRoute';
 import componentQueries from 'react-component-queries';
-import { BrowserRouter, Redirect, Route, Switch, Link, useHistory, useLocation } from 'react-router-dom';
+import { BrowserRouter, Redirect, Route, Switch, Link, useHistory, useLocation, useParams } from 'react-router-dom';
 import './styles/reduction.scss';
 
 const AlertPage = React.lazy(() => import('pages/AlertPage'));
@@ -86,7 +86,7 @@ class App extends React.Component {
                 <Route exact path="/students" component={StudentPage} />
                 <Route exact path="/input-groups" component={InputGroupPage} />
                 <Route exact path="/project" component={ProjectPage} />
-                <Route exact path="/project/item" component={ProjectPageItem} />
+                <Route exact path="/project/:id" component={ProjectPageItem} />
                 <Route exact path="/charts" component={ChartPage} />
               </React.Suspense>
             </MainLayout>

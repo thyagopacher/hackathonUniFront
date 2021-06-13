@@ -12,13 +12,15 @@ import {
   Button,
   CardHeader
 } from 'reactstrap';
+import { useParams } from 'react-router-dom'
 
 import projects from "./projectsData";
 import { FaPlus } from "react-icons/fa";
 import Page from 'components/Page';
 
 
-const ProjectPageItem = () => {
+const ProjectPageItem = props => {
+  const { id } = useParams()
   return (
     <Page
       title="Projetos"
@@ -27,7 +29,7 @@ const ProjectPageItem = () => {
       <Row>
         <Col md="9" sm="9" xs="9">
           <Card>
-            <CardHeader>Titulo do Projeto</CardHeader>
+            <CardHeader>Titulo do Projeto  </CardHeader>
             <CardText>
             <CardBody>
             <h4>Criado a dois meses atrás</h4>
