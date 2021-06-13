@@ -28,6 +28,7 @@ const StudentPage = () => {
 
   async function handleSaveStudent() {
     studentService.saveStudent(student).then(response => {
+      console.log(response.status);
       if (response.status) {
         MySwal.fire({
           position: 'top-end',
@@ -38,9 +39,10 @@ const StudentPage = () => {
         });
       }
     }).catch(error => {
+
       MySwal.fire({
         position: 'top-end',
-        icon: error,
+        icon: 'error',
         title: 'Erro causado por: ' + error,
         showConfirmButton: false,
         timer: 1500

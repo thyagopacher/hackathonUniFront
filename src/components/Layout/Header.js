@@ -57,7 +57,10 @@ class Header extends React.Component {
 
   constructor(props) {
     super(props);
-    this.usuarioLogado = JSON.parse(localStorage.getItem('returnLogin')).data[0].aluno;
+    let returnLogin = localStorage.getItem('returnLogin');
+    if (returnLogin != undefined && returnLogin != null && returnLogin != "") {
+      this.usuarioLogado = JSON.parse(localStorage.getItem('returnLogin')).data[0].aluno;
+    }
 
     // Não chame this.setState() aqui!
     if (window.performance) {
@@ -93,6 +96,15 @@ class Header extends React.Component {
 
     document.querySelector('.cr-sidebar').classList.toggle('cr-sidebar--open');
   };
+
+  exitSystem = () => {
+    localStorage.clear();
+    window.location.href = '/login';
+  }
+
+  accessMenu = (url) => {
+    window.location.href = url;
+  }
 
   render() {
     const { isNotificationConfirmed } = this.state;
@@ -160,22 +172,22 @@ class Header extends React.Component {
                   className="border-light"
                 >
                   <ListGroup flush>
-                    <ListGroupItem tag="button" action className="border-light">
+                    <ListGroupItem onClick={() => this.accessMenu('students')} tag="button" action className="border-light">
                       <MdPersonPin /> Meu Perfil
                     </ListGroupItem>
-                    <ListGroupItem tag="button" action className="border-light">
+                    <ListGroupItem onClick={() => this.accessMenu('stats')} tag="button" action className="border-light">
                       <MdInsertChart /> Stats
                     </ListGroupItem>
-                    <ListGroupItem tag="button" action className="border-light">
+                    <ListGroupItem onClick={() => this.accessMenu('mensagens')} tag="button" action className="border-light">
                       <MdMessage /> Mensagens
                     </ListGroupItem>
-                    <ListGroupItem tag="button" action className="border-light">
+                    <ListGroupItem onClick={() => this.accessMenu('configs')} tag="button" action className="border-light">
                       <MdSettingsApplications /> Configurações
                     </ListGroupItem>
-                    <ListGroupItem tag="button" action className="border-light">
+                    <ListGroupItem onClick={() => this.accessMenu('help')} tag="button" action className="border-light">
                       <MdHelp /> Ajuda
                     </ListGroupItem>
-                    <ListGroupItem tag="button" action className="border-light">
+                    <ListGroupItem onClick={() => this.exitSystem()} tag="button" action className="border-light">
                       <MdExitToApp /> Sair
                     </ListGroupItem>
                   </ListGroup>
