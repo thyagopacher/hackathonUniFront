@@ -48,7 +48,7 @@ const MdNotificationsActiveWithBadge = withBadge({
 class Header extends React.Component {
 
   lastUserAction = '';
-
+  usuarioLogado = {};
   state = {
     isOpenNotificationPopover: false,
     isNotificationConfirmed: false,
@@ -57,6 +57,11 @@ class Header extends React.Component {
 
   constructor(props) {
     super(props);
+    let returnLogin = localStorage.getItem('returnLogin');
+    if (returnLogin != undefined && returnLogin != null && returnLogin != "") {
+      this.usuarioLogado = JSON.parse(localStorage.getItem('returnLogin')).data[0].aluno;
+    }
+
     // Não chame this.setState() aqui!
     if (window.performance) {
       if (performance.navigation.type === 1) {
@@ -91,6 +96,15 @@ class Header extends React.Component {
 
     document.querySelector('.cr-sidebar').classList.toggle('cr-sidebar--open');
   };
+
+  exitSystem = () => {
+    localStorage.clear();
+    window.location.href = '/login';
+  }
+
+  accessMenu = (url) => {
+    window.location.href = url;
+  }
 
   render() {
     const { isNotificationConfirmed } = this.state;
@@ -152,28 +166,28 @@ class Header extends React.Component {
             >
               <PopoverBody className="p-0 border-light">
                 <UserCard
-                  title="Alguem"
-                  subtitle="alguem@algum.com"
+                  title={this.usuarioLogado.nome}
+                  subtitle={this.usuarioLogado.email}
                   text={this.lastUserAction}
                   className="border-light"
                 >
                   <ListGroup flush>
-                    <ListGroupItem tag="button" action className="border-light">
+                    <ListGroupItem onClick={() => this.accessMenu('students')} tag="button" action className="border-light">
                       <MdPersonPin /> Meu Perfil
                     </ListGroupItem>
-                    <ListGroupItem tag="button" action className="border-light">
+                    <ListGroupItem onClick={() => this.accessMenu('stats')} tag="button" action className="border-light">
                       <MdInsertChart /> Stats
                     </ListGroupItem>
-                    <ListGroupItem tag="button" action className="border-light">
+                    <ListGroupItem onClick={() => this.accessMenu('mensagens')} tag="button" action className="border-light">
                       <MdMessage /> Mensagens
                     </ListGroupItem>
-                    <ListGroupItem tag="button" action className="border-light">
+                    <ListGroupItem onClick={() => this.accessMenu('configs')} tag="button" action className="border-light">
                       <MdSettingsApplications /> Configurações
                     </ListGroupItem>
-                    <ListGroupItem tag="button" action className="border-light">
+                    <ListGroupItem onClick={() => this.accessMenu('help')} tag="button" action className="border-light">
                       <MdHelp /> Ajuda
                     </ListGroupItem>
-                    <ListGroupItem tag="button" action className="border-light">
+                    <ListGroupItem onClick={() => this.exitSystem()} tag="button" action className="border-light">
                       <MdExitToApp /> Sair
                     </ListGroupItem>
                   </ListGroup>
