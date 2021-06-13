@@ -48,7 +48,7 @@ const MdNotificationsActiveWithBadge = withBadge({
 class Header extends React.Component {
 
   lastUserAction = '';
-
+  usuarioLogado = {};
   state = {
     isOpenNotificationPopover: false,
     isNotificationConfirmed: false,
@@ -57,6 +57,8 @@ class Header extends React.Component {
 
   constructor(props) {
     super(props);
+    this.usuarioLogado = JSON.parse(localStorage.getItem('returnLogin')).data[0].aluno;
+
     // Não chame this.setState() aqui!
     if (window.performance) {
       if (performance.navigation.type === 1) {
@@ -152,8 +154,8 @@ class Header extends React.Component {
             >
               <PopoverBody className="p-0 border-light">
                 <UserCard
-                  title="Alguem"
-                  subtitle="alguem@algum.com"
+                  title={this.usuarioLogado.nome}
+                  subtitle={this.usuarioLogado.email}
                   text={this.lastUserAction}
                   className="border-light"
                 >

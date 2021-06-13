@@ -15,17 +15,36 @@ import {
   Label,
   Row,
 } from 'reactstrap';
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
 
 
 const StudentPage = () => {
-
+  const usuarioLogado = JSON.parse(localStorage.getItem('returnLogin')).data[0].aluno;
+  const MySwal = withReactContent(Swal);
   const student = {};
+  student.nome = usuarioLogado.nome;
+  student.email = usuarioLogado.email;
 
   async function handleSaveStudent() {
     studentService.saveStudent(student).then(response => {
-      console.log(response.data);
+      if (response.status) {
+        MySwal.fire({
+          position: 'top-end',
+          icon: 'success',
+          title: 'Informações salvas com sucesso.',
+          showConfirmButton: false,
+          timer: 1500
+        });
+      }
     }).catch(error => {
-      console.log('Erro causado por:', error);
+      MySwal.fire({
+        position: 'top-end',
+        icon: error,
+        title: 'Erro causado por: ' + error,
+        showConfirmButton: false,
+        timer: 1500
+      });
     });;
   }
 

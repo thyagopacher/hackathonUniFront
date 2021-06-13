@@ -8,8 +8,9 @@ const urlApi = 'https://hackathon-api.andreazza.dev';
 
 const api = axios.create({
     baseURL: urlApi,
+    withCredentials: false,
     headers: {
-        "Content-type": "application/json"
+        "Content-type": "application/json;charset=utf-8",
     }
 });
 
