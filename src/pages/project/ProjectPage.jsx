@@ -10,7 +10,7 @@ import {
   CardTitle,
   Button
 } from 'reactstrap';
-
+import { Link } from 'react-router-dom'
 import projects from "./projectsData";
 import { FaPlus } from "react-icons/fa";
 import Page from 'components/Page';
@@ -28,12 +28,15 @@ const cardProject = () => {
             {/* <CardSubtitle tag="h6" className="mb-2 text-muted">Card subtitle</CardSubtitle> */}
             <CardText>{project.description}</CardText>
             <Col className="text-center">
-              <Button
-                title="Clique para ver mais detalhes"
-              >
-                <FaPlus />
-                Veja mais
-              </Button>
+              <Link to={"/project/" + project.id}>
+                <Button
+                  title="Clique para ver mais detalhes"
+                >
+                  <FaPlus />
+                  Veja mais
+                </Button>
+              </Link>
+
             </Col>
           </CardBody>
         </Card>
