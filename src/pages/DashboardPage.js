@@ -32,7 +32,6 @@ import {
 import InfiniteCalendar from 'react-infinite-calendar';
 import {
   Badge,
-  Button,
   Card,
   CardBody,
   CardDeck,
@@ -45,6 +44,7 @@ import {
   Row,
 } from 'reactstrap';
 import { getColor } from 'utils/colors';
+import './App.css';
 
 const today = new Date();
 const thisWeek = new Date(
@@ -55,13 +55,21 @@ const thisWeek = new Date(
 
 class DashboardPage extends React.Component {
 
+  alunoLogado = {};
+
   constructor(props) {
     super(props);
     this.state = {
       projects: [],
-      isLoading: true
+      projetosSugeridos: [],
+      isLoading: true,
+      isLoadingSugeridos: true
     };
     this.loadProjects();
+
+    /** retorna projetos sugeridos */
+    this.alunoLogado = JSON.parse(localStorage.getItem('returnLogin')).data[0].aluno;
+    this.loadProjetosSugeridos(this.alunoLogado.alun_codi);
   }
 
   componentDidMount() {
@@ -72,7 +80,7 @@ class DashboardPage extends React.Component {
 
   loadProjects() {
     projectService.getProject().then(response => {
-      const projetos = response.data[0].lista;
+      const projetos = response.data;
       this.setState({
         projects: projetos,
         isLoading: false,
@@ -82,15 +90,34 @@ class DashboardPage extends React.Component {
     });
   }
 
+  loadProjetosSugeridos(idAluno) {
+    projectService.getSugestao(idAluno).then(response => {
 
+      const projetos = response.data.projetos;
+      this.setState({
+        projetosSugeridos: projetos,
+        isLoadingSugeridos: false,
+        isLoading: this.state.isLoading,
+        projects: this.state.projects
+      });
+
+    }).catch(error => {
+      console.error(error);
+    });
+  }
 
   render() {
 
-    const { isLoading, projects } = this.state;
+    const isLoading = this.state.isLoading;
+    const isLoadingSugeridos = this.state.isLoadingSugeridos;
+    const projetosSugeridos = this.state.projetosSugeridos;
+    const projects = this.state.projects;
+
     const primaryColor = getColor('primary');
     const secondaryColor = getColor('secondary');
-
+    console.log(projects);
     return (
+
       <Page
         className="DashboardPage"
         title="Dashboard"
@@ -220,13 +247,35 @@ class DashboardPage extends React.Component {
               <CardHeader>Novos Projetos</CardHeader>
               <CardBody>
                 {
-                  !isLoading ? projects.map(
-                    ({ image, title, description }, indice) => (
+                  !isLoading ? projects.filter(x => x.proj_imag != "NULL" && x.proj_stat == "1").slice(0, 5).map(
+                    ({ proj_imag, proj_nome, proj_desc, proj_codi }, indice) => (
                       <ProductMedia
                         key={indice}
-                        image={image}
-                        title={title}
-                        description={description}
+                        image={proj_imag}
+                        title={proj_nome}
+                        description={proj_desc}
+                        id={proj_codi}
+                      />
+                    ),
+                  ) : <h3>Carregando...</h3>
+                }
+              </CardBody>
+            </Card>
+          </Col>
+
+          <Col md="6" sm="12" xs="12">
+            <Card>
+              <CardHeader>Projetos Sugeridos</CardHeader>
+              <CardBody>
+                {
+                  !isLoadingSugeridos ? projetosSugeridos.filter(x => x.proj_imag != "NULL" && x.proj_stat == "1").slice(0, 5).map(
+                    ({ proj_imag, proj_nome, proj_desc, proj_codi }, indice) => (
+                      <ProductMedia
+                        key={indice}
+                        image={proj_imag}
+                        title={proj_nome}
+                        description={proj_desc}
+                        id={proj_codi}
                       />
                     ),
                   ) : <h3>Carregando...</h3>
