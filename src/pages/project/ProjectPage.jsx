@@ -28,7 +28,7 @@ const cardProject = () => {
             {/* <CardSubtitle tag="h6" className="mb-2 text-muted">Card subtitle</CardSubtitle> */}
             <CardText>{project.description}</CardText>
             <Col className="text-center">
-              <Link to="/project/{project.id}">
+              <Link to={"/project/" + project.id}>
                 <Button
                   title="Clique para ver mais detalhes"
                 >
