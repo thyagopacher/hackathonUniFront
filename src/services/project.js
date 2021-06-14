@@ -8,6 +8,9 @@ const projectService = {
             return await api.get("/projects");
         }
     },
+    getSugestao: async function (id) {
+        return await api.get("/sugestao/" + id);
+    },
     saveProject: async function (project) {
         return await api.post('/projects', project);
     },
